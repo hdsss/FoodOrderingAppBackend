@@ -30,7 +30,7 @@ public class AddressEntity implements Serializable {
 
     @Column(name = "FLAT_BUIL_NUMBER")
     @NotNull
-    private String flat_buil_number;
+    private String flatBuilNo;
 
     @Column(name = "LOCALITY")
     @NotNull
@@ -47,7 +47,7 @@ public class AddressEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "STATE_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private StateEntity state_id;
+    private StateEntity state;
 
     @Column(name = "ACTIVE")
     @NotNull
@@ -70,12 +70,12 @@ public class AddressEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public String getFlat_buil_number() {
-        return flat_buil_number;
+    public String getFlatBuilNo() {
+        return flatBuilNo;
     }
 
-    public void setFlat_buil_number(String flat_buil_number) {
-        this.flat_buil_number = flat_buil_number;
+    public void setFlatBuilNo(String flat_buil_number) {
+        this.flatBuilNo = flat_buil_number;
     }
 
     public String getLocality() {
@@ -102,12 +102,12 @@ public class AddressEntity implements Serializable {
         this.pincode = pincode;
     }
 
-    public StateEntity getState_id() {
-        return state_id;
+    public StateEntity getState() {
+        return state;
     }
 
-    public void setState_id(StateEntity state_id) {
-        this.state_id = state_id;
+    public void setState(StateEntity state_id) {
+        this.state = state_id;
     }
 
     public int getActive() {

@@ -47,7 +47,7 @@ public class addressController {
         for (AddressEntity ent:addressEntity) {
             AddressList list=new AddressList();
             list.city(ent.getCity());
-            list.flatBuildingName(ent.getFlat_buil_number());
+            list.flatBuildingName(ent.getFlatBuilNo());
             list.locality(ent.getLocality());
             list.pincode(ent.getPincode());
 

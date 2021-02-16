@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class CustomerService {
@@ -175,4 +172,18 @@ public class CustomerService {
         return customer;
     }
 
+    public CustomerEntity authenticate(String authToken) throws AuthenticationFailedException {
+        CustomerAuthTokenEntity authTokenEntity = customerDao.getUserAuthTokenByAccessToken(authToken);
+        if(authTokenEntity == null ) {
+            throw new AuthenticationFailedException("ATHR-001", "Customer is not Logged in.");
+        }
+        if((authTokenEntity != null && authTokenEntity.getLogoutAt() != null)) {
+            throw new AuthenticationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
+        }
+        Duration duration=Duration.between(ZonedDateTime.now(),authTokenEntity.getExpiresAt());
+        if((authTokenEntity != null && duration.isNegative())) {
+            throw new AuthenticationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
+        }
+        return authTokenEntity.getUser();
+    }
 }

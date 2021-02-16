@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.service.common.UnexpectedException;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
@@ -28,6 +29,8 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private CustomerService customerService;
 
     /**
      * End point for getting detailed list of all restaurants
@@ -137,13 +140,13 @@ public class RestaurantController {
     @RequestMapping(method = RequestMethod.POST, path = "/api/restaurant/{restaurant_id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
-            @RequestBody @RequestParam(name = "customerRating") final Double rating,
+            @RequestParam(name = "customerRating") final Double rating,
             @RequestBody @PathVariable("restaurant_id") final String restaurantUUID,
             @RequestBody @RequestHeader("authorization") final String authToken)
             throws AuthenticationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         // authenticate logger-In user by checking its had valid auth token
-        restaurantService.authenticate(authToken);
+        customerService.authenticate(authToken);
         if (restaurantUUID == null || restaurantUUID.isEmpty()) {
             throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty)");
         }
@@ -199,11 +202,11 @@ public class RestaurantController {
     private RestaurantDetailsResponseAddress getRestaurantAddressResp(RestaurantEntity restaurantEntity) {
         RestaurantDetailsResponseAddress restaurantDetailsResponseAddress = new RestaurantDetailsResponseAddress();
         restaurantDetailsResponseAddress.setCity(restaurantEntity.getAddressId().getCity());
-        restaurantDetailsResponseAddress.setFlatBuildingName(restaurantEntity.getAddressId().getFlat_buil_number());
+        restaurantDetailsResponseAddress.setFlatBuildingName(restaurantEntity.getAddressId().getFlatBuilNo());
         restaurantDetailsResponseAddress.setId(UUID.fromString(restaurantEntity.getAddressId().getUuid()));
         restaurantDetailsResponseAddress.setLocality(restaurantEntity.getAddressId().getLocality());
         restaurantDetailsResponseAddress.setPincode(restaurantEntity.getAddressId().getPincode());
-        restaurantDetailsResponseAddress.setState(getAddressStateResp(restaurantEntity.getAddressId().getState_id()));
+        restaurantDetailsResponseAddress.setState(getAddressStateResp(restaurantEntity.getAddressId().getState()));
         return restaurantDetailsResponseAddress;
     }
 
@@ -216,7 +219,7 @@ public class RestaurantController {
     private RestaurantDetailsResponseAddressState getAddressStateResp(StateEntity stateEntity) {
         RestaurantDetailsResponseAddressState restaurantDetailsResponseAddressState = new RestaurantDetailsResponseAddressState();
         restaurantDetailsResponseAddressState.setId(UUID.fromString(stateEntity.getUuid()));
-        restaurantDetailsResponseAddressState.setStateName(stateEntity.getState_name());
+        restaurantDetailsResponseAddressState.setStateName(stateEntity.getStateName());
         return restaurantDetailsResponseAddressState;
     }
 

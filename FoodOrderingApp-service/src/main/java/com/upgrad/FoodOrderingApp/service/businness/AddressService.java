@@ -48,7 +48,7 @@ public class AddressService {
         CustomerEntity customerEntity=customerAuthTokenEntity.getUser();
         AddressEntity createAddress=new AddressEntity();
         createAddress.setCity(city);
-        createAddress.setFlat_buil_number(buildingName);
+        createAddress.setFlatBuilNo(buildingName);
         createAddress.setLocality(locality);
         createAddress.setPincode(pincode);
         createAddress.setActive(1);
@@ -56,7 +56,7 @@ public class AddressService {
         if(add==null){
             throw new AddressNotFoundException("ANF-002","No state by this id");
         }
-        createAddress.setState_id(add);
+        createAddress.setState(add);
         createAddress.setUuid(UUID.randomUUID().toString());
         AddressEntity addressEntity=addressDao.createAddress(createAddress);
         CustomerAddressEntity customerAddressEntity=new CustomerAddressEntity();
@@ -93,4 +93,7 @@ public class AddressService {
 
     }
 
+    public AddressEntity getAddressByUUID(String addressId) {
+        return new AddressEntity();
+    }
 }

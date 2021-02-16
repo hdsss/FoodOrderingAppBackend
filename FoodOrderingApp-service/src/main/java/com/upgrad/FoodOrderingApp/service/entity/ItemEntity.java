@@ -8,6 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "item")
+@NamedQueries({
+        @NamedQuery(name = "itemByUuid", query = "select q from ItemEntity q where q.uuid = :uuid")
+})
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +27,7 @@ public class ItemEntity {
 
     @NotNull
     @Column(name = "PRICE")
-    private BigDecimal price;
+    private Integer price;
 
     @NotNull
     @Column(name = "TYPE")
@@ -60,11 +63,11 @@ public class ItemEntity {
         this.itemName = itemName;
     }
 
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

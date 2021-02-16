@@ -27,7 +27,7 @@ public class StateEntity implements Serializable {
 
     @Column(name = "STATE_NAME")
     @NotNull
-    private String state_name;
+    private String stateName;
 
     public Integer getId() {
         return id;
@@ -45,11 +45,11 @@ public class StateEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public String getState_name() {
-        return state_name;
+    public String getStateName() {
+        return stateName;
     }
 
-    public void setState_name(String state_name) {
-        this.state_name = state_name;
+    public void setStateName(String state_name) {
+        this.stateName = state_name;
     }
 }

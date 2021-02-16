@@ -75,21 +75,6 @@ public class RestaurantService {
         return restaurantEntity;
     }
 
-    public Boolean authenticate(String authToken) throws AuthenticationFailedException {
-        CustomerAuthTokenEntity userAuthToken = customerDao.getUserAuthTokenByAccessToken(authToken);
-        if(userAuthToken == null ) {
-            throw new AuthenticationFailedException("ATHR-001", "Customer is not Logged in.");
-        }
-        if((userAuthToken != null && userAuthToken.getLogoutAt() != null)) {
-            throw new AuthenticationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
-        }
-        Duration duration=Duration.between(ZonedDateTime.now(),userAuthToken.getExpiresAt());
-        if((userAuthToken != null && duration.isNegative())) {
-            throw new AuthenticationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-        }
-        return true;
-    }
-
     @Transactional(propagation = Propagation.REQUIRED)
     public RestaurantEntity updateRating(Double rating, String restaurantUuid) throws RestaurantNotFoundException {
         return restaurantDao.updateRating(rating, restaurantUuid);
